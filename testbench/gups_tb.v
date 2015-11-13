@@ -49,11 +49,12 @@ module gups_tb();
 
 		rst = 0;
 
-		repeat (1000000) begin
+        $display("Starting repeat\n");
+
+		repeat (10000) begin
 			#(`CLK)
 			if (req == 1'b1) begin
 				if (wr == 1'b1) begin
-                    $display("Writing\n");
 					exp[addr] = exp[addr] + 1;
 					#(5 * `CLK)
 					data[addr] = dout;
