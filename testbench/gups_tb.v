@@ -50,25 +50,30 @@ module gups_tb();
 		rst = 0;
 
 		repeat (1000000) begin
+			#(`CLK)
 			if (req == 1'b1) begin
 				if (wr == 1'b1) begin
+                    $display("Writing\n");
 					exp[addr] = exp[addr] + 1;
-					(# 5 * CLK)
+					#(5 * `CLK)
 					data[addr] = dout;
+                    $display("exp: %d\t, actual:%d\n",exp[addr], data[addr]);
 					if (exp[addr] != dout) begin
 						$display ("Error writing %d", addr);
+                    end
+                end
 				else begin
-					(# 2 * CLK)
+					#(2 * `CLK)
 					din = data[addr];
 				end
 				rdy = 1'b1;
-				(# `CLK)
+				#(`CLK)
 				rdy = 1'b0;
 			end
-			(#`CLK)
 		end
 
 		$display("\n========================================================\n");
+        $finish;
 	end
 
 endmodule 
