@@ -13,7 +13,7 @@ module gups(
     range
 );
 
-input   wire    clk;
+input           clk, reset;
 input   [63:0]  data_in;
 output  [63:0]  dout;
 output  [63:0]  address;
@@ -31,7 +31,7 @@ reg     [2:0]   count;
 reg     [63:0]  data;
 
 always @(posedge clk) begin
-    if(reset == 1'b0)
+    if(reset == 1'b1)
     begin
         addr  <= seed;
         mask  <= 16'b1011000110100110;
