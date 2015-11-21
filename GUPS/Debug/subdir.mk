@@ -3,14 +3,17 @@
 ################################################################################
 
 # Add inputs and outputs from these tool invocations to the build variables 
+O_SRCS += \
+../gups_vanilla.o 
+
 C_SRCS += \
-../gups_vanilla.c 
+../gups_vanilla2.c 
 
 OBJS += \
-./gups_vanilla.o 
+./gups_vanilla2.o 
 
 C_DEPS += \
-./gups_vanilla.d 
+./gups_vanilla2.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

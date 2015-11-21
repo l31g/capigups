@@ -117,6 +117,7 @@ int main(int narg, char **arg)
   nupdates = (u64Int) nprocs * chunk * niterate;
   ran = HPCC_starts(nupdates/nprocs*me);
 
+
   /* loop:
        generate chunk random values per proc
        communicate datums to correct processor via hypercube routing
