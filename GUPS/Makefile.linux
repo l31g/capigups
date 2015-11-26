@@ -5,10 +5,10 @@ SHELL = /bin/sh
 # System-specific settings
 
 CC =		gcc
-CCFLAGS =	-O -g -DCHECK
+CCFLAGS =	-O -g -I/usr/local/include -DCHECK64 
 LINK =		gcc
-LINKFLAGS =	-O -g 
-LIB =		-lmpich
+LINKFLAGS =	-O -g -L/usr/local/lib/
+LIB =		-lmpi
 
 # Link target
 

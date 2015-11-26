@@ -12,7 +12,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <mpich/mpi.h>
+#include <mpi.h>
 
 #define MAX(a,b) ((a) > (b) ? (a) : (b))
 
@@ -40,6 +40,7 @@ u64Int HPCC_starts(s64Int n);
 
 int main(int narg, char **arg)
 {
+  FILE *file;
   int me,nprocs;
   int i,j,iterate,niterate;
   int nlocal,nlocalm1,logtable,index,logtablelocal;
@@ -130,13 +131,22 @@ int main(int narg, char **arg)
 
   MPI_Barrier(MPI_COMM_WORLD);
   t0 = -MPI_Wtime();
-
+  
+	file = fopen("hex_address.txt","w+");
+	if (file == NULL)
+	{
+	    printf("Error opening file!\n");
+    exit(1);
+	}
+	
   for (iterate = 0; iterate < niterate; iterate++) {
     for (i = 0; i < chunk; i++) {
       ran = (ran << 1) ^ ((s64Int) ran < ZERO64B ? POLY : ZERO64B);
       data[i] = ran;
+			fprintf(file, "%016llx\n",ran);
     }
     ndata = chunk;
+		fclose(file);
 
     for (j = 0; j < logprocs; j++) {
       nkeep = nsend = 0;
