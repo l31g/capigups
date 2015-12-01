@@ -16,7 +16,7 @@ module sys_tb();
 
 	reg		[31:0]	idx;
 
-	top dut(clk, rst, addr, din, dout, req, wr, rdy,
+	sys dut(clk, rst, addr, din, dout, req, wr, rdy,
 		seed0, seed1, seed2, seed3, range);
 	
 	initial begin
