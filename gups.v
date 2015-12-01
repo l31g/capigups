@@ -32,8 +32,7 @@ reg     [2:0]   count;
 reg     [63:0]  data;
 
 always @(posedge clk) begin
-    if(reset == 1'b1)
-    begin
+    if(reset == 1'b1) begin
         addr  <= seed;
         mask  <= 16'b1011000110100110;
         count <= 3'b000;

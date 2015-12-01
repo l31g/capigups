@@ -42,16 +42,20 @@ always @(posedge clk) begin
 		current <= 2'b00;
 		last	<= 2'b00;
 		working	<= 1'b0;
+	end
 	else if (working == 1'b0) begin
 		if (((1 << ((last + 1) % 4)) & req_a) != 0) begin
 			current <= (last + 1) % 4;
 			working <= 1'b1;
+		end
 		else if (((1 << ((last + 2) % 4)) & req_a) != 0) begin
 			current <= (last + 2) % 4;
 			working <= 1'b1;
+		end
 		else if (((1 << ((last + 3) % 4)) & req_a) != 0) begin
 			current <= (last + 3) % 4;
 			working <= 1'b1;
+		end
 		else if (((1 << ((last + 4) % 4)) & req_a) != 0) begin
 			current <= (last + 4) % 4;
 			working <= 1'b1;
