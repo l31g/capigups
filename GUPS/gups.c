@@ -12,13 +12,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <mpich/mpi.h>
 
 #define MAX(a,b) ((a) > (b) ? (a) : (b))
 
-/* machine defs
-   compile with -DLONG64 if a "long" is 64 bits
-   else compile with no setting if "long long" is 64 bit */
 
 #ifdef LONG64
 #define POLY 0x0000000000000007UL
@@ -26,44 +22,19 @@
 #define ZERO64B 0L
 typedef long s64Int;
 typedef unsigned long u64Int;
-#define U64INT MPI_UNSIGNED_LONG
 #else
 #define POLY 0x0000000000000007ULL
 #define PERIOD 1317624576693539401LL
 #define ZERO64B 0LL
 typedef long long s64Int;
 typedef unsigned long long u64Int;
-#define U64INT MPI_LONG_LONG_INT
 #endif
 
 u64Int HPCC_starts(s64Int n);
 
-void write_add2file();
-
-int write_count = 0;
-FILE *f;
-void write_add2file(u64Int add){/* write address to a file*/
-
-	if(write_count == 0){
-	f = fopen("hex_address.txt", "w");
-	if (f == NULL)
-	{
-	    printf("Error opening file!\n");
-	    exit(1);
-	}
-	write_count ++;
-	}
-	else{
-		f = fopen("hex_address.txt", "a");
-	/* print integers and floats */
-	fprintf(f,"%016llx\n", add);
-	}
-
-	fclose(f);
-}
-
 int main(int narg, char **arg)
 {
+  FILE *file;
   int me,nprocs;
   int i,j,iterate,niterate;
   int nlocal,nlocalm1,logtable,index,logtablelocal;
@@ -73,11 +44,6 @@ int main(int narg, char **arg)
   u64Int *table,*data,*send;
   u64Int ran,datum,procmask,nglobal,offset,nupdates;
   u64Int ilong,nexcess_long,nbad_long;
-  MPI_Status status;
-
-  MPI_Init(&narg,&arg);
-  MPI_Comm_rank(MPI_COMM_WORLD,&me);
-  MPI_Comm_size(MPI_COMM_WORLD,&nprocs);
 
   /* command line args = N M chunk
      N = length of global table is 2^N
@@ -86,20 +52,17 @@ int main(int narg, char **arg)
 
   if (narg != 4) {
     if (me == 0) printf("Syntax: gups N M chunk\n");
-    MPI_Abort(MPI_COMM_WORLD,1);
   }
 
   logtable = atoi(arg[1]);
   niterate = atoi(arg[2]);
   chunk = atoi(arg[3]);
 
-  /* insure Nprocs is power of 2 */
 
   i = 1;
   while (i < nprocs) i *= 2;
   if (i != nprocs) {
     if (me == 0) printf("Must run on power-of-2 procs\n");
-    MPI_Abort(MPI_COMM_WORLD,1);
   }
 
   /* nglobal = entire table
@@ -128,7 +91,6 @@ int main(int narg, char **arg)
 
   if (!table || !data || !send) {
     if (me == 0) printf("Table allocation failed\n");
-    MPI_Abort(MPI_COMM_WORLD,1);
   }
 
   /* initialize my portion of global array
@@ -142,7 +104,6 @@ int main(int narg, char **arg)
   ran = HPCC_starts(nupdates/nprocs*me);
 
 
-
   /* loop:
        generate chunk random values per proc
        communicate datums to correct processor via hypercube routing
@@ -153,16 +114,22 @@ int main(int narg, char **arg)
   nexcess = 0;
   nbad = 0;
 
-  MPI_Barrier(MPI_COMM_WORLD);
-  t0 = -MPI_Wtime();
-
+  
+	file = fopen("./add_files/hex_address.txt","w+");
+	if (file == NULL)
+	{
+	    printf("Error opening file!\n");
+    exit(1);
+	}
+	
   for (iterate = 0; iterate < niterate; iterate++) {
     for (i = 0; i < chunk; i++) {
       ran = (ran << 1) ^ ((s64Int) ran < ZERO64B ? POLY : ZERO64B);
-      write_add2file(ran);
       data[i] = ran;
+			fprintf(file, "%016llx\n",ran);
     }
     ndata = chunk;
+		fclose(file);
 
     for (j = 0; j < logprocs; j++) {
       nkeep = nsend = 0;
@@ -180,13 +147,7 @@ int main(int narg, char **arg)
 	}
       }
 
-      MPI_Sendrecv(send,nsend,U64INT,ipartner,0,&data[nkeep],chunkbig,U64INT,
-		   ipartner,0,MPI_COMM_WORLD,&status);
-      MPI_Get_count(&status,U64INT,&nrecv);
-      ndata = nkeep + nrecv;
-      maxndata = MAX(maxndata,ndata);
     }
-    maxnfinal = MAX(maxnfinal,ndata);
     if (ndata > chunk) nexcess += ndata - chunk;
 
     for (i = 0; i < ndata; i++) {
@@ -202,28 +163,16 @@ int main(int narg, char **arg)
 #endif
   }
 
-  MPI_Barrier(MPI_COMM_WORLD);
-  t0 += MPI_Wtime();
-
-  /* stats */
-
-  MPI_Allreduce(&t0,&t0_all,1,MPI_DOUBLE,MPI_SUM,MPI_COMM_WORLD);
-  t0 = t0_all/nprocs;
 
   i = maxndata;
-  MPI_Allreduce(&i,&maxndata,1,MPI_INT,MPI_MAX,MPI_COMM_WORLD);
   i = maxnfinal;
-  MPI_Allreduce(&i,&maxnfinal,1,MPI_INT,MPI_MAX,MPI_COMM_WORLD);
   ilong = nexcess;
-  MPI_Allreduce(&ilong,&nexcess_long,1,U64INT,MPI_SUM,MPI_COMM_WORLD);
   ilong = nbad;
-  MPI_Allreduce(&ilong,&nbad_long,1,U64INT,MPI_SUM,MPI_COMM_WORLD);
 
   nupdates = (u64Int) niterate * nprocs * chunk;
   Gups = nupdates / t0 / 1.0e9;
 
   if (me == 0) {
-
     printf("Number of procs: %d\n",nprocs);
     printf("Vector size: %lld\n",nglobal);
     printf("Max datums during comm: %d\n",maxndata);
@@ -240,7 +189,6 @@ int main(int narg, char **arg)
   free(table);
   free(data);
   free(send);
-  MPI_Finalize();
 }
 
 /* start random number generator at Nth step of stream
