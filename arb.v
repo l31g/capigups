@@ -67,7 +67,7 @@ always @(posedge clk) begin
 	end
 end
 
-always @(*) begin
+always @(posedge clk) begin
     if(working != 1'b1) begin
         req_m   = 1'b0;
         rdy_a   = 4'b0000;
