@@ -3,7 +3,7 @@
 module arb (
 	clk,
 	reset,
-	addr_a.
+	addr_a,
 	din_a,
 	dout_a,
 	req_a,
