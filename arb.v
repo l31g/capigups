@@ -67,7 +67,7 @@ always @(posedge clk) begin
 	end
 end
 
-always @(current or rdy_m) begin
+always @(*) begin
 	if (current == 2'b00) begin
 		rdy_a 	= rdy_m ? 4'b0001 : 4'b0000; 
 		addr_m 	= addr_a[063:000];

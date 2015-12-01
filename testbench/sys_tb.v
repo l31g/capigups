@@ -1,7 +1,7 @@
 `define CLK_OVER_TWO	3.5
 `define CLK				(`CLK_OVER_TWO * 2)
 
-module gups_tb();
+module sys_tb();
 	`define BITS	32
 	
 	reg				clk, rst, rdy;
