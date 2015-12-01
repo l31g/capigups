@@ -1,4 +1,4 @@
-module top (
+module sys (
 	clk,
 	reset,
 	addr,
