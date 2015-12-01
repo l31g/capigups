@@ -1,7 +1,7 @@
 `define CLK_OVER_TWO	3.5
 `define CLK				(`CLK_OVER_TWO * 2)
 
-module gups_tb();
+module sys_tb();
 	`define BITS	32
 	
 	reg				clk, rst, rdy;
@@ -16,7 +16,8 @@ module gups_tb();
 
 	reg		[31:0]	idx;
 
-	gups dut(clk, rst, addr, din, dout, req, wr, rdy, seed, range);
+	top dut(clk, rst, addr, din, dout, req, wr, rdy,
+		seed0, seed1, seed2, seed3, range);
 	
 	initial begin
 		clk = 1;
@@ -38,7 +39,10 @@ module gups_tb();
 
 		rst = 0;
 		rdy = 0;
-		seed = $random;
+		seed0 = $random;
+		seed1 = $random;
+		seed2 = $random;
+		seed3 = $random;
 		range = 64'h0000_0000_0000_1fff;
 
 		# (3 * `CLK)
@@ -78,4 +82,3 @@ module gups_tb();
 	end
 
 endmodule 
-
