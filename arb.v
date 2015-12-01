@@ -66,11 +66,13 @@ always @(posedge clk) begin
 	end
 end
 
-assign din_a[((64*(current+1))-1):(64*current)]	= din_m;
-assign rdy_a[current]							= rdy_m;
-assign addr_m	= addr_a[((64*(current+1))-1):(64*current)];
-assign dout_m	= dout_a[((64*(current+1))-1):(64*current)];
-assign req_m	= req_a[current];
-assign wr_m		= wr_a[current];
+always @(current) begin
+	din_a[((64*(current+1))-1):(64*current)]	= din_m;
+	rdy_a[current]								= rdy_m;
+	addr_m	= addr_a[((64*(current+1))-1):(64*current)];
+	dout_m	= dout_a[((64*(current+1))-1):(64*current)];
+	req_m	= req_a[current];
+	wr_m	= wr_a[current];
+end
 
 endmodule
