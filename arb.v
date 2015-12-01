@@ -23,12 +23,12 @@ output	[255:0] din_a;
 input	[255:0] dout_a;
 input	[3:0]	req_a;
 input	[3:0]	wr_a;
-output	[3:0]	rdy_a;
-output	[63:0]	addr_m;
+output	reg [3:0]	rdy_a;
+output	reg [63:0]	addr_m;
 input	[63:0]	din_m;
-output	[63:0]	dout_m;
-output			req_m;
-output			wr_m;
+output	reg [63:0]	dout_m;
+output	reg		req_m;
+output	reg		wr_m;
 input			rdy_m;
 
 reg		[1:0]	current;
