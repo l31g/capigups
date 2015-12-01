@@ -34,12 +34,12 @@ wire	[3:0]	rdy_a;
 arb arbiter(clk, reset, addr_a, din_a, dout_a, req_a, wr_a,
 	rdy_a, addr, din, dout,req, wr, rdy);
 
-gups g0(clk, reset, din_a[063:000], dout_a[063:000],
-	addr_a[063:000], seed0, req_a[0], wr_a[0], rdy_a[0], range);
-gups g1(clk, reset, din_a[127:064], dout_a[127:064],
-	addr_a[127:064], seed1, req_a[1], wr_a[1], rdy_a[1], range);
-gups g2(clk, reset, din_a[191:128], dout_a[191:128],
-	addr_a[191:128], seed2, req_a[2], wr_a[2], rdy_a[2], range);
-gups g3(clk, reset, din_a[255:192], dout_a[255:192],
-	addr_a[255:192], seed3, req_a[3], wr_a[3], rdy_a[3], range);
+gups g0(clk, reset, addr_a[063:000], din_a[063:000], dout_a[063:000],
+	req_a[0], wr_a[0], rdy_a[0], seed0, range);
+gups g1(clk, reset, addr_a[127:064], din_a[127:064], dout_a[127:064],
+	req_a[1], wr_a[1], rdy_a[1], seed1, range);
+gups g2(clk, reset, addr_a[191:128], din_a[191:128], dout_a[191:128],
+	req_a[2], wr_a[2], rdy_a[2], seed2, range);
+gups g3(clk, reset, addr_a[255:192], din_a[255:192], dout_a[255:192],
+	req_a[3], wr_a[3], rdy_a[3], seed3, range);
 endmodule
