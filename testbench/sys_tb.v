@@ -55,14 +55,13 @@ module sys_tb();
 
         $display("Starting repeat\n");
 
-		repeat (100) begin
+		repeat (1000000) begin
 			#(`CLK)
 			if (req == 1'b1) begin
 				if (wr == 1'b1) begin
-					exp[addr] = exp[addr] + 1;
 					#(5 * `CLK)
+					exp[addr] = exp[addr] + 1;
 					data[addr] = dout;
-                    $display("exp: %d\t, actual:%d\n",exp[addr], data[addr]);
 					if (exp[addr] != dout) begin
 						$display ("Error writing %d", addr);
                     end
