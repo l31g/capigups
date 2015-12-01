@@ -60,19 +60,48 @@ always @(posedge clk) begin
 			current <= (last + 4) % 4;
 			working <= 1'b1;
 		end
+	end
 	else if (rdy_m == 1'b1) begin
 		last 	<= current;
 		working <= 1'b0;
 	end
 end
 
-always @(current) begin
-	din_a[((64*(current+1))-1):(64*current)]	= din_m;
-	rdy_a[current]								= rdy_m;
-	addr_m	= addr_a[((64*(current+1))-1):(64*current)];
-	dout_m	= dout_a[((64*(current+1))-1):(64*current)];
-	req_m	= req_a[current];
-	wr_m	= wr_a[current];
+always @(current or rdy_m) begin
+	if (current == 2'b00) begin
+		rdy_a 	= rdy_m ? 4'b0001 : 4'b0000; 
+		addr_m 	= addr_a[063:000];
+		dout_m	= dout_a[063:000];
+		req_m	= req_a[0];
+		wr_m	= wr_a[0];
+	end
+	else if (current == 2'b01) begin
+		rdy_a 	= rdy_m ? 4'b0010 : 4'b0000; 
+		addr_m 	= addr_a[127:064];
+		dout_m	= dout_a[127:064];
+		req_m	= req_a[1];
+		wr_m	= wr_a[1];
+	end
+	else if (current == 2'b10) begin
+		rdy_a 	= rdy_m ? 4'b0100 : 4'b0000; 
+		addr_m 	= addr_a[191:128];
+		dout_m	= dout_a[191:128];
+		req_m	= req_a[2];
+		wr_m	= wr_a[2];
+	end
+	else if (current == 2'b11) begin
+		rdy_a 	= rdy_m ? 4'b1000 : 4'b0000; 
+		addr_m 	= addr_a[255:192];
+		dout_m	= dout_a[255:192];
+		req_m	= req_a[3];
+		wr_m	= wr_a[3];
+	end		
+
 end
+
+assign din_a[255:192] = din_m;
+assign din_a[191:128] = din_m;
+assign din_a[127:064] = din_m;
+assign din_a[063:000] = din_m;
 
 endmodule
