@@ -8,18 +8,15 @@ CC =		gcc
 CCFLAGS =	-O -g -I/usr/local/include -DCHECK64 
 LINK =		gcc
 LINKFLAGS =	-O -g -L/usr/local/lib/
-LIB =		-lmpi
+#LIB =		-lmpi
 
 # Link target
 
-gups_vanilla:	gups_vanilla.o
-	$(LINK) $(LINKFLAGS) gups_vanilla.o $(LIB) -o gups_vanilla
+gups:	gups.o
+	$(LINK) $(LINKFLAGS) gups.o  -o ./bin/gups
 
-gups_nonpow2:	gups_nonpow2.o
-	$(LINK) $(LINKFLAGS) gups_nonpow2.o $(LIB) -o gups_nonpow2
-
-gups_opt:	gups_opt.o
-	$(LINK) $(LINKFLAGS) gups_opt.o $(LIB) -o gups_opt
+hex2bin: hex2bin.o 
+	$(LINK) $(LINKFLAGS) hex2bin.o  -o ./bin/hex2bin
 
 # Compilation rules
 
