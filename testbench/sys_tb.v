@@ -62,9 +62,9 @@ module sys_tb();
 					exp[addr] = exp[addr] + 1;
 					#(5 * `CLK)
 					data[addr] = dout;
-                    $display("exp: %d\t, actual:%d\n",exp[addr], data[addr]);
+                    $display("exp: %h\t, actual:%h\n",exp[addr], data[addr]);
 					if (exp[addr] != dout) begin
-						$display ("Error writing %d", addr);
+						$display ("Error writing %h", addr);
                     end
                 end
 				else begin
