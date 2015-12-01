@@ -62,4 +62,4 @@ assign req      = request;
 assign dout     = data_out;
 assign address  = addr & range;
 
-endmodule;
+endmodule
