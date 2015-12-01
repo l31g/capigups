@@ -1,14 +1,3 @@
-/* ----------------------------------------------------------------------
-   gups = algorithm for the HPCC RandomAccess (GUPS) benchmark
-          implements a hypercube-style synchronous all2all
-
-   Steve Plimpton, sjplimp@sandia.gov, Sandia National Laboratories
-   www.cs.sandia.gov/~sjplimp
-   Copyright (2006) Sandia Corporation
-------------------------------------------------------------------------- */
-
-/* random update GUPS code, power-of-2 number of procs
-   compile with -DCHECK to check if table updates happen on correct proc */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -115,7 +104,7 @@ int main(int narg, char **arg)
   nbad = 0;
 
   
-	file = fopen("./add_files/hex_address.txt","w+");
+	file = fopen("hex_address.txt","w+");
 	if (file == NULL)
 	{
 	    printf("Error opening file!\n");
