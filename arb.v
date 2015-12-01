@@ -40,7 +40,7 @@ wire	[3:0]	shfand;
 always @(posedge clk) begin
 	if(reset == 1'b1) begin
 		current <= 2'b00;
-		last	<= 2'b00;
+		last	<= 2'b11;
 		working	<= 1'b0;
 	end
 	else if (working == 1'b0) begin
@@ -68,7 +68,12 @@ always @(posedge clk) begin
 end
 
 always @(*) begin
-	if (current == 2'b00) begin
+    if(working != 1'b1) begin
+        req_m   = 1'b0;
+        rdy_a   = 4'b0000;
+        wr_m    = 1'b0;
+    end
+	else if (current == 2'b00) begin
 		rdy_a 	= rdy_m ? 4'b0001 : 4'b0000; 
 		addr_m 	= addr_a[063:000];
 		dout_m	= dout_a[063:000];
