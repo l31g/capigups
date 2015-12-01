@@ -11,7 +11,7 @@ module sys_tb();
 	reg		[63:0]	exp		[8191:0];
 	wire	[63:0]	dout;
 	wire	[63:0]	addr;
-	reg		[15:0]	seed;
+	reg		[15:0]	seed0, seed1, seed2, seed3;
 	reg		[63:0]	range;
 
 	reg		[31:0]	idx;
