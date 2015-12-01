@@ -42,3 +42,4 @@ gups g2(clk, reset, din_a[191:128], dout_a[191:128],
 	addr_a[191:128], seed2, req_a[2], wr_a[2], rdy_a[2], range);
 gups g3(clk, reset, din_a[255:192], dout_a[255:192],
 	addr_a[255:192], seed3, req_a[3], wr_a[3], rdy_a[3], range);
+endmodule
