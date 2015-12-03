@@ -55,7 +55,7 @@ module sys_tb();
 
         $display("Starting repeat\n");
 
-		repeat (1250) begin //1250
+		repeat (430000) begin //1250
 			#(`CLK)
 			if (req == 1'b1) begin
 				if (wr == 1'b1) begin

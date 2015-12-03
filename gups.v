@@ -27,20 +27,20 @@ reg             write;
 reg     [63:0]  data_out;
 reg             request;
 reg     [63:0]  addr;
-reg     [15:0]  mask;
+reg     [31:0]  mask;
 reg     [2:0]   count;
 reg     [63:0]  data;
 
 always @(posedge clk) begin
     if(reset == 1'b1) begin
         addr  <= seed;
-        mask  <= 16'b1011000110100110;
+        mask  <= 32'b1010_0001_1110_0110_0010_1011_1011_1000;
         count <= 3'b000;
         request <= 1'b0;
     end
     else if (count < 3'b100) begin
-        addr  <= {addr[47:0], addr[63:48]^mask};
-        mask  <= {mask[14:0], mask[15]};
+        addr  <= {addr[47:0], addr[63:48]^mask[15:0]};
+        mask  <= {mask[30:0], mask[31]};
         count <= count + 1;
     end 
 
