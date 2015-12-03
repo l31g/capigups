@@ -43,7 +43,7 @@ module sys_tb();
 		seed1 = $random;
 		seed2 = $random;
 		seed3 = $random;
-		range = 64'h0000_0000_0000_1fff;
+		range = 64'h0000_0000_0000_ffff;
 
 		# (3 * `CLK)
 
@@ -55,7 +55,7 @@ module sys_tb();
 
         $display("Starting repeat\n");
 
-		repeat (1000000) begin
+		repeat (1250) begin //1250
 			#(`CLK)
 			if (req == 1'b1) begin
 				if (wr == 1'b1) begin
@@ -63,8 +63,10 @@ module sys_tb();
 					exp[addr] = exp[addr] + 1;
 					data[addr] = dout;
                     //$display("exp: %h\t, actual:%h\n",exp[addr], data[addr]);
+                    $display("%h", addr);
 					if (exp[addr] != dout) begin
 						$display ("Error writing %h", addr);
+                        $finish;
                     end
                 end
 				else begin
