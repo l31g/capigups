@@ -39,7 +39,7 @@ int main(int narg, char **arg)
      M = # of update sets per proc
      chunk = # of updates in one set */
 
-  if (narg != 4) {
+  if (narg != 5) {
     if (me == 0) printf("Syntax: gups N M chunk\n");
   }
 
@@ -104,12 +104,12 @@ int main(int narg, char **arg)
   nbad = 0;
 
   
-	file = fopen("hex_address.txt","w+");
-	if (file == NULL)
-	{
-	    printf("Error opening file!\n");
-    exit(1);
-	}
+	//file = fopen(atoi(arg[4]),"w+");
+	//if (file == NULL)
+	//{
+	  //  printf("Error opening file!\n");
+    //exit(1);
+	//}
 time_t t;	
 					srand((unsigned) time(&t));
   for (iterate = 0; iterate < niterate; iterate++) {
@@ -118,10 +118,11 @@ time_t t;
   	//ran = HPCC_starts(nupdates/nprocs*me);
 	 ran = (ran << 1) ^ ((s64Int) ran < ZERO64B ? POLY : ZERO64B);
       data[i] = ran;
-			fprintf(file, "%016llx\n",ran);
+			//fprintf(file, "%016llx\n",ran);
+			printf("%016llx\n",ran);
     }
     ndata = chunk;
-		fclose(file);
+		//fclose(file);
 
     for (j = 0; j < logprocs; j++) {
       nkeep = nsend = 0;
