@@ -18,7 +18,7 @@ input           clk, reset;
 input   [63:0]  din;
 output  [63:0]  dout;
 output  [63:0]  addr;
-input   [15:0]  seed0, seed1, seed2, seed3;
+input   [63:0]  seed0, seed1, seed2, seed3;
 output          req;
 output          wr;
 input           rdy;

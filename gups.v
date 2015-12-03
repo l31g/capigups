@@ -17,7 +17,7 @@ input           clk, reset;
 input   [63:0]  data_in;
 output  [63:0]  dout;
 output  [63:0]  address;
-input   [15:0]  seed;
+input   [63:0]  seed;
 output          req;
 output          wr;
 input           ready;
