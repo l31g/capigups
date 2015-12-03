@@ -39,7 +39,7 @@ int main(int narg, char **arg)
      M = # of update sets per proc
      chunk = # of updates in one set */
 
-  if (narg != 5) {
+  if (narg != 4) {
     if (me == 0) printf("Syntax: gups N M chunk\n");
   }
 
@@ -110,13 +110,20 @@ int main(int narg, char **arg)
 	  //  printf("Error opening file!\n");
     //exit(1);
 	//}
-time_t t;	
-					srand((unsigned) time(&t));
+	int mask_size = atoi(arg[4]);
+	int mask;
+	mask = (1 << (mask_size*4)) - 1;
+	//printf ("%d,\n%d\n",mask,mask_size);
+	//mask = 3;
+		
+	time_t t;	
+	srand((unsigned) time(&t));
   for (iterate = 0; iterate < niterate; iterate++) {
     for (i = 0; i < chunk; i++) {
      ran = rand();	
   	//ran = HPCC_starts(nupdates/nprocs*me);
 	 ran = (ran << 1) ^ ((s64Int) ran < ZERO64B ? POLY : ZERO64B);
+      ran = ran & mask  ;
       data[i] = ran;
 			//fprintf(file, "%016llx\n",ran);
 			printf("%016llx\n",ran);
