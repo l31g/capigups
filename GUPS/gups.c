@@ -1,4 +1,4 @@
-
+#include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -110,10 +110,13 @@ int main(int narg, char **arg)
 	    printf("Error opening file!\n");
     exit(1);
 	}
-	
+time_t t;	
+					srand((unsigned) time(&t));
   for (iterate = 0; iterate < niterate; iterate++) {
     for (i = 0; i < chunk; i++) {
-      ran = (ran << 1) ^ ((s64Int) ran < ZERO64B ? POLY : ZERO64B);
+     ran = rand();	
+  	//ran = HPCC_starts(nupdates/nprocs*me);
+	 ran = (ran << 1) ^ ((s64Int) ran < ZERO64B ? POLY : ZERO64B);
       data[i] = ran;
 			fprintf(file, "%016llx\n",ran);
     }
@@ -180,8 +183,7 @@ int main(int narg, char **arg)
   free(send);
 }
 
-/* start random number generator at Nth step of stream
-   routine provided by HPCC */
+
 
 u64Int HPCC_starts(s64Int n)
 {
