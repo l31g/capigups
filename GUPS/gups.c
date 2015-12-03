@@ -87,8 +87,10 @@ int main(int narg, char **arg)
 
   for (i = 0; i < nlocal; i++) table[i] = i + offset;
 
-  /* start my random # partway thru global stream */
 
+res = (r30 << 34) + (s30 << 4) + t4 
+   
+   		
   nupdates = (u64Int) nprocs * chunk * niterate;
   ran = HPCC_starts(nupdates/nprocs*me);
 
