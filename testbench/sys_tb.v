@@ -43,7 +43,7 @@ module sys_tb();
 		seed1 = $random;
 		seed2 = $random;
 		seed3 = $random;
-		range = 64'h0000_0000_0000_ffff;
+		range = 64'h0000_0000_0000_00ff;
 
 		# (3 * `CLK)
 
@@ -55,7 +55,7 @@ module sys_tb();
 
         $display("Starting repeat\n");
 
-		repeat (430000) begin //1250
+		repeat (108000) begin //1250
 			#(`CLK)
 			if (req == 1'b1) begin
 				if (wr == 1'b1) begin
