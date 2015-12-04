@@ -18,6 +18,8 @@ gups:	gups.o
 hex2bin: hex2bin.o 
 	$(LINK) $(LINKFLAGS) hex2bin.o  -o ./bin/hex2bin
 
+clean: 
+	rm -f *.o
 # Compilation rules
 
 %.o:%.c
