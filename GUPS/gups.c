@@ -95,8 +95,10 @@ int main(int narg, char **arg)
   for (iterate = 0; iterate < niterate; iterate++) {
     for (i = 0; i < chunk; i++) {
      ran_add = rand64bits();//rand();
-      ran_add = ran_add & mask ;
-      data[i] = data[i]+ran_add; //update
+      data[i] = ran_add; //update
+      
+		 ran_add = ran_add & mask ;
+      data[i] = data[i]+1; //update
 	//fprintf(file, "%016llx\n",ran_add);
 	  printf("%016llx\n",ran_add);
     }
